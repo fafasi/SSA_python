@@ -1,8 +1,8 @@
-import numpy as np
-class funtion():
-    def __init__(self):
+import numpy as np#导入包并起方便的别称
+class funtion():#定义一个类funtion
+    def __init__(self):#定义类中的方法（函数）
         print("starting SSA")
-def Parameters(F):
+def Parameters(F):#自定义一个函数parameters
     if F=='F1':
         # ParaValue=[-100,100,30] [-100,100]代表初始范围，30代表dim维度
         ParaValue = [-100,100,30]
@@ -64,7 +64,7 @@ def Bounds(s,Lb,Ub):
 def SSA(pop,M,c,d,dim,f):
     #global fit
     P_percent=0.2
-    pNum = round(pop*P_percent)  # 生产者的人口规模占总人口规模的20%
+    pNum = round(pop*P_percent)  # 生产者的人口规模占总人口规模的20%，四舍五入到整数
     lb = c*np.ones((1,dim))  # 生成1*dim的全1矩阵，并全乘以c；lb是下限
     ub = d*np.ones((1,dim))  # ub是上限
     X = np.zeros((pop,dim))  # 生成pop*dim的全0矩阵，代表麻雀位置
@@ -78,7 +78,7 @@ def SSA(pop,M,c,d,dim,f):
     pFit = fit  #最佳适应度矩阵
     pX = X  # 最佳种群位置
     fMin = np.min(fit[:,0]) # fMin表示全局最优适应值，生产者能量储备水平取决于对个人适应度值的评估
-    bestI = np.argmin(fit[:,0])
+    bestI = np.argmin(fit[:,0])#给出轴方向最小值的下标
     bestX = X[bestI,:] # bestX表示fMin对应的全局最优位置的变量信息
     Convergence_curve = np.zeros((1,M))  # 初始化收敛曲线
     for t in range(M): # 迭代更新
@@ -108,7 +108,7 @@ def SSA(pop,M,c,d,dim,f):
         #  这一部位为加入者（追随者）的位置更新
         for ii in range(pop-pNum):
             i = ii+pNum
-            A = np.floor(np.random.rand(1,dim)*2)*2-1
+            A = np.floor(np.random.rand(1,dim)*2)*2-1#逐元素向下取整
             if i > pop/2:  #  这个代表这部分麻雀处于十分饥饿的状态（因为它们的能量很低，也就是适应度值很差），需要到其它地方觅食
                 Q = np.random.rand(1)  # 也可以替换成  np.random.normal(loc=0, scale=1.0, size=1)
                 X[sortIndex[0,i],:] = Q*np.exp(worse-pX[sortIndex[0,i],:]/np.square(i))
